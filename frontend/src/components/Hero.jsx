@@ -1,11 +1,12 @@
-import React from 'react';
-import '../styles/Hero.css';
+import React from "react";
+import "../styles/Hero.css";
+import profileImg from "../assets/profile.png";
 
 const Hero = () => {
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -21,30 +22,31 @@ const Hero = () => {
               Email Marketing Specialist | Full Stack Developer
             </h2>
             <p className="hero-description">
-              Full Stack Developer & Email Marketer focused on building scalable web applications 
-              and driving business growth through smart automation and data-driven email campaigns.
+              Full Stack Developer & Email Marketer focused on building scalable
+              web applications and driving business growth through smart
+              automation and data-driven email campaigns.
             </p>
             <div className="hero-buttons">
-              <button 
+              <button
                 className="hero-button hero-button-primary"
-                onClick={() => scrollToSection('projects')}
+                onClick={() => scrollToSection("projects")}
               >
                 View Projects
               </button>
-              <button 
+              <button
                 className="hero-button hero-button-secondary"
-                onClick={() => scrollToSection('contact')}
+                onClick={() => scrollToSection("contact")}
               >
                 Contact Me
               </button>
             </div>
           </div>
         </div>
-        
+
         <div className="hero-image-container">
           <div className="hero-image-wrapper">
-            <img 
-              src="https://customer-assets.emergentagent.com/job_profile-hub-172/artifacts/1zy24i0k_jeet1221.jpg" 
+            <img
+              src={profileImg}
               alt="Jitendra Pal - Email Marketing Specialist"
               className="hero-image"
             />

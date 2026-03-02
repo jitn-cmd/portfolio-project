@@ -1,31 +1,56 @@
-import React, { useState } from 'react';
-import '../styles/Contact.css';
-import { Github, Linkedin, Mail, Send } from 'lucide-react';
+import React, { useState } from "react";
+import "../styles/Contact.css";
+import { Github, Linkedin, Mail, Send } from "lucide-react";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
+    name: "",
+    email: "",
+    message: "",
   });
 
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Mock form submission
-    setStatus('Message sent successfully!');
-    setTimeout(() => {
-      setStatus('');
-      setFormData({ name: '', email: '', message: '' });
-    }, 3000);
+
+    try {
+      setLoading(true);
+      setStatus("Sending...");
+
+      const response = await fetch("http://localhost:8000/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+
+      await response.json();
+
+      setStatus("Message sent successfully!");
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error("Error:", error);
+      setStatus("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+      setTimeout(() => {
+        setStatus("");
+      }, 3000);
+    }
   };
 
   return (
@@ -41,7 +66,9 @@ const Contact = () => {
         <div className="contact-content">
           <form className="contact-form" onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="name" className="form-label">Name</label>
+              <label htmlFor="name" className="form-label">
+                Name
+              </label>
               <input
                 type="text"
                 id="name"
@@ -55,7 +82,9 @@ const Contact = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="email" className="form-label">Email</label>
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
               <input
                 type="email"
                 id="email"
@@ -69,7 +98,9 @@ const Contact = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="message" className="form-label">Message</label>
+              <label htmlFor="message" className="form-label">
+                Message
+              </label>
               <textarea
                 id="message"
                 name="message"
@@ -82,8 +113,12 @@ const Contact = () => {
               ></textarea>
             </div>
 
-            <button type="submit" className="form-submit-btn">
-              <span>Send Message</span>
+            <button
+              type="submit"
+              className="form-submit-btn"
+              disabled={loading}
+            >
+              <span>{loading ? "Sending..." : "Send Message"}</span>
               <Send size={18} />
             </button>
 
@@ -96,34 +131,31 @@ const Contact = () => {
               <p className="contact-info-text">
                 Feel free to reach out through any of these platforms
               </p>
-              
+
               <div className="social-links">
-                <a 
-                  href="https://github.com/jitn-cmd" 
-                  target="_blank" 
+                <a
+                  href="https://github.com/jitn-cmd"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="social-link"
-                  aria-label="GitHub Profile"
                 >
                   <Github size={24} />
                   <span>GitHub</span>
                 </a>
-                
-                <a 
-                  href="https://www.linkedin.com/in/jitendra-pal-760875372/" 
-                  target="_blank" 
+
+                <a
+                  href="https://www.linkedin.com/in/jitendra-pal-760875372/"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="social-link"
-                  aria-label="LinkedIn Profile"
                 >
                   <Linkedin size={24} />
                   <span>LinkedIn</span>
                 </a>
-                
-                <a 
+
+                <a
                   href="mailto:jitendrapal1153@gmail.com"
                   className="social-link"
-                  aria-label="Email"
                 >
                   <Mail size={24} />
                   <span>Email</span>
