@@ -26,13 +26,16 @@ const Contact = () => {
       setLoading(true);
       setStatus("Sending...");
 
-      const response = await fetch("http://localhost:8000/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/contact`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
         },
-        body: JSON.stringify(formData),
-      });
+      );
 
       if (!response.ok) {
         throw new Error("Failed to send message");
